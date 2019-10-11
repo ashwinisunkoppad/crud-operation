@@ -2,8 +2,8 @@ import { Component, OnInit } from "@angular/core";
 import { User } from "./menu";
 import { MenudataService } from "./menudata.service";
 import { ConfirmationService } from "primeng/api";
-import {MenuItem} from 'primeng/api';
-import {MessageService} from 'primeng/api';
+import { MenuItem } from "primeng/api";
+import { MessageService } from "primeng/api";
 
 @Component({
   selector: "app-menu",
@@ -27,7 +27,8 @@ export class MenuComponent implements OnInit {
 
   constructor(
     private _data: MenudataService,
-    private confirmationService: ConfirmationService,private messageService: MessageService
+    private confirmationService: ConfirmationService,
+    private messageService: MessageService
   ) {
     this.config = {
       itemsPerPage: 8,
@@ -36,16 +37,27 @@ export class MenuComponent implements OnInit {
     };
   }
 
-
   ngOnInit() {
     this.getAlldesignations();
     this.items = [
-      { label: 'View', icon: 'fa fa-search', command: (event) => this.viewCar(this.selectedCar) },
+      {
+        label: "View",
+        icon: "fa fa-search",
+        command: event => this.viewCar(this.selectedCar)
+      },
 
-      { label: 'Delete', icon: 'fa fa-trash', command: (event) => this.deleteCar(this.selectedCar) }
-  ];
+      {
+        label: "Delete",
+        icon: "fa fa-trash",
+        command: event => this.deleteCar(this.selectedCar)
+      },
+      {
+        label: "Edit",
+        icon: "fa fa-edit",
+        command: event => this.editCar(this.selectedCar)
+      }
+    ];
   }
-
 
   public getAlldesignations() {
     this._data.getAlldesignations().subscribe((data: User[]) => {
@@ -89,7 +101,6 @@ export class MenuComponent implements OnInit {
     this.config.currentPage = event;
   }
 
-
   onDelete(id: number) {
     console.log(id);
     this._data.getDeleteData(id).subscribe((data: User) => {
@@ -106,27 +117,40 @@ export class MenuComponent implements OnInit {
       icon: "pi pi-exclamation-triangle",
       accept: () => {
         this.onDelete(id);
-
       },
-      reject: () => {
-
-      }
+      reject: () => {}
     });
   }
   viewCar(car: User) {
-    this.messageService.add({ severity: 'info', summary: 'Car Selected', detail: car.name+ ' - ' + car.description});
-}
-deleteCar(car: User) {
-  let index = -1;
-  for (let i = 0; i < this.arr.length; i++) {
-      if (this.arr[i].name
-         == car.name) {
-          index = i;
-          break;
-      }
+    this.messageService.add({
+      severity: "info",
+      summary: "Car Selected",
+      detail: car.name + " - " + car.description
+    });
   }
-  this.arr.splice(index, 1);
+  deleteCar(car: User) {
+    let index = -1;
+    for (let i = 0; i < this.arr.length; i++) {
+      if (this.arr[i].name == car.name) {
+        index = i;
+        break;
+      }
+    }
+    this.arr.splice(index, 1);
 
-  this.messageService.add({ severity: 'info', summary: 'Car Deleted', detail: car.name + ' - ' + car.description });
-}
+    this.messageService.add({
+      severity: "info",
+      summary: "Car Deleted",
+      detail: car.name + " - " + car.description
+    });
+  }
+
+  editCar(test) {
+    this.messageService.add({
+      severity: "info",
+      summary: "Car edit",
+      detail: "success"
+    });
+
+  }
 }
